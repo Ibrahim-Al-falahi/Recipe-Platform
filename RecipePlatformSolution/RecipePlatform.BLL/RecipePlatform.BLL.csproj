@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RecipePlatform.DAL\RecipePlatform.DAL.csproj" />
+    <ProjectReference Include="..\RecipePlatform.Models\RecipePlatform.Models.csproj" />
+  </ItemGroup>
+
 </Project>
