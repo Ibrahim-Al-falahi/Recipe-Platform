@@ -9,9 +9,7 @@ namespace RecipePlatform.DAL.Interfaces
 {
     public interface IRecipeRepository:IGenericRepository<Recipe>
     {
-        Task<IEnumerable<Recipe>> GetAllWithCategory();
-        Task<Recipe> GetByIdWithCategory(int id);
-        Task<IEnumerable<Category>> GetAllCatagories();
-        Task<bool> TodoListExists(int id);
+        Task<IEnumerable<Recipe>> GetAllWithDetailsAsync();
+        Task<Recipe> GetByIdWithDetailsAsync(int id);
     }
 }

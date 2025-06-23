@@ -19,24 +19,20 @@ namespace RecipePlatform.DAL.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Category>> GetAllCategories()
+        public async Task<IEnumerable<Recipe>> GetAllWithDetailsAsync()
         {
-            return await _context.Categories.ToListAsync();
+            return await _context.Recipes
+            .Include(r => r.Category)
+            .Include(r => r.Ratings)
+            .ToListAsync();
         }
 
-        public async Task<IEnumerable<Recipe>> GetAllWithCategory()
+        public async Task<Recipe> GetByIdWithDetailsAsync(int id)
         {
-            return await _context.Recipes.Include(x => x.Category).ToListAsync();
-        }
-
-        public async Task<Recipe> GetByIdWithCategory(int id)
-        {
-            return await _context.Recipes.Include(x=>x.Category).FirstOrDefaultAsync(x=>x.Id==id);
-        }
-
-        public async Task<bool> TodoListExists(int id)
-        {
-            return await _context.Recipes.AnyAsync(x=>x.Id==id);
+            return await _context.Recipes
+            .Include(r => r.Category)
+            .Include(r => r.Ratings)
+            .FirstOrDefaultAsync(r => r.Id == id);
         }
     }
 }

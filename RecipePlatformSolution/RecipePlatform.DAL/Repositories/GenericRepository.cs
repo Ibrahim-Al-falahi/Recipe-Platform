@@ -21,8 +21,7 @@ namespace RecipePlatform.DAL.Repositories
 
         public async Task AddAsync(T entity)
         {
-            await _context.AddAsync(entity);
-            await _context.SaveChangesAsync();
+            await _context.AddAsync(entity);    
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()
@@ -38,6 +37,16 @@ namespace RecipePlatform.DAL.Repositories
         public void Remove(T entity)
         {
             _context.Remove(entity);
+        }
+
+        public async Task Save()
+        {
+            await _context.SaveChangesAsync();
+        }
+
+        public void Update(T entity)
+        {
+            _context.Update(entity);
         }
     }
 }

@@ -12,6 +12,8 @@ namespace RecipePlatform.DAL.Interfaces
         Task<IEnumerable<T>> GetAllAsync();
         Task<T> GetByIdAsync(int id);
         Task AddAsync(T entity);
+        void Update(T entity);
         void Remove(T entity);
+        Task Save();
     }
 }

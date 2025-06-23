@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RecipePlatform.DAL.Context;
+using RecipePlatform.DAL.Interfaces;
+using RecipePlatform.DAL.Repositories;
+using RecipePlatform.Models.UserModule;
 
 namespace RecipePlatform.MVC
 {
@@ -16,9 +19,9 @@ namespace RecipePlatform.MVC
                 option => option.UseSqlServer(builder.Configuration.GetConnectionString("Connection"))
                 );
 
-            //builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
-            builder.Services.AddIdentity<IdentityUser, IdentityRole>(
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(
                 option =>
                 {
                     option.Password.RequiredUniqueChars = 3;
