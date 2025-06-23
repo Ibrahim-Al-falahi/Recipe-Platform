@@ -20,6 +20,6 @@ namespace RecipePlatform.Models.RecipeModule
 
         [ForeignKey(nameof(RecipeId))]
         public Recipe Recipe { get; set; }
-        public string RecipeId { get; set; }
+        public int RecipeId { get; set; }
     }
 }

@@ -13,5 +13,9 @@ namespace RecipePlatform.BLL.Interfaces
         Task<IEnumerable<RecipeDto>> GetAllRecipesAsync();
         Task<RecipeDto> GetRecipeByIdAsync(int id);
         Task AddRecipeAsync(Recipe recipe);
+        Task UpdateRecipeAsync(Recipe recipe);
+        Task DeleteRecipeAsync(int id);
+
+        Task<IEnumerable<CategoryDto>> GetAllCategoriesAsync();
     }
 }

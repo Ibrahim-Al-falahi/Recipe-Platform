@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RecipePlatform.DAL.Context;
 using RecipePlatform.DAL.Interfaces;
+using RecipePlatform.Models.RecipeModule;
 
 namespace RecipePlatform.DAL.Repositories
 {
@@ -13,10 +14,13 @@ namespace RecipePlatform.DAL.Repositories
         private readonly ApplicationDbContext _context;
         public IRecipeRepository Recipes { get; }
 
+        public IGenericRepository<Category> Categories { get; }
+
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
             Recipes = new RecipeRepository(context);
+            Categories = new GenericRepository<Category>(context);
         }
 
         public async Task<int> CompleteAsync()
