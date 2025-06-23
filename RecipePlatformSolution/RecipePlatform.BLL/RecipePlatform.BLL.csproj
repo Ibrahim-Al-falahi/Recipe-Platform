@@ -11,10 +11,4 @@
     <ProjectReference Include="..\RecipePlatform.Models\RecipePlatform.Models.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
-    <Folder Include="DTOs\" />
-    <Folder Include="Services\" />
-  </ItemGroup>
-
 </Project>
