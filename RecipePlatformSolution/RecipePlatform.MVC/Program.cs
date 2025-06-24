@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using RecipePlatform.BLL.Interfaces;
+using RecipePlatform.BLL.Services;
 using RecipePlatform.DAL.Context;
 using RecipePlatform.DAL.Interfaces;
 using RecipePlatform.DAL.Repositories;
@@ -19,7 +21,11 @@ namespace RecipePlatform.MVC
                 option => option.UseSqlServer(builder.Configuration.GetConnectionString("Connection"))
                 );
 
+            // Add Repositories and Services
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IRecipeService, RecipeService>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(
                 option =>

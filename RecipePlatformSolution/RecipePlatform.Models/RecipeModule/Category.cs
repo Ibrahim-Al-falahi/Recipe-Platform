@@ -11,5 +11,7 @@ namespace RecipePlatform.Models.RecipeModule
     {
         [Required]
         public string Name { get; set; }
+
+        public ICollection<Recipe> Recipes { get; set; } = new HashSet<Recipe>();
     }
 }

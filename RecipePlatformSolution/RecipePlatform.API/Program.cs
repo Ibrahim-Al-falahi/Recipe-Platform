@@ -1,4 +1,11 @@
 
+using Microsoft.EntityFrameworkCore;
+using RecipePlatform.BLL.Interfaces;
+using RecipePlatform.BLL.Services;
+using RecipePlatform.DAL.Context;
+using RecipePlatform.DAL.Interfaces;
+using RecipePlatform.DAL.Repositories;
+
 namespace RecipePlatform.API
 {
     public class Program
@@ -8,6 +15,15 @@ namespace RecipePlatform.API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddDbContext<ApplicationDbContext>(
+                option => option.UseSqlServer(builder.Configuration.GetConnectionString("Connection"))
+                );
+
+            // Add Repositories and Services
+            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IRecipeService, RecipeService>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
