@@ -1,10 +1,15 @@
 
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using RecipePlatform.BLL.Interfaces;
 using RecipePlatform.BLL.Services;
 using RecipePlatform.DAL.Context;
 using RecipePlatform.DAL.Interfaces;
 using RecipePlatform.DAL.Repositories;
+using RecipePlatform.Models.UserModule;
 
 namespace RecipePlatform.API
 {
@@ -24,6 +29,34 @@ namespace RecipePlatform.API
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IRecipeService, RecipeService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+            //JWT
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
+
+            builder.Services.AddScoped<JwtTokenService>();
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                var config = builder.Configuration;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = config["Jwt:Issuer"],
+                    ValidAudience = config["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]))
+                };
+            });
+
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

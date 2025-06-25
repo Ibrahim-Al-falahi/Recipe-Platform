@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./assets/css/index.css" />
+    <title>TasteBud Recipes - API Consumer</title>
+    <script src=
+"https://code.jquery.com/jquery-3.6.0.min.js">
+    </script>
+    
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🍳 TasteBud Recipes</h1>
+            <p>API Consumer Demo - Discover & Share Amazing Recipes</p>
+        </div>
+
+        <!-- Authentication Section -->
+        <div class="auth-section">
+            <h2 class="section-title">Authentication</h2>
+            <div id="auth-status"></div>
+            
+            <div id="login-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="login-email">Email:</label>
+                        <input type="email" id="login-email" placeholder="your@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password:</label>
+                        <input type="password" id="login-password" placeholder="••••••••">
+                    </div>
+                </div>
+                <button class="btn" onclick="login()">Login</button>
+                <button class="btn btn-secondary" onclick="showRegisterForm()">Register New User</button>
+            </div>
+
+            <div id="register-form" class="hidden">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="reg-name">Full Name:</label>
+                        <input type="text" id="reg-name" placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-email">Email:</label>
+                        <input type="email" id="reg-email" placeholder="your@email.com">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="reg-password">Password:</label>
+                    <input type="password" id="reg-password" placeholder="••••••••">
+                </div>
+                <button class="btn" onclick="register()">Create Account</button>
+                <button class="btn btn-secondary" onclick="showLoginForm()">Back to Login</button>
+            </div>
+
+            <div id="user-panel" class="hidden">
+                <div class="user-info">
+                    <strong>Welcome back!</strong> You are logged in as <span id="current-user"></span>
+                </div>
+                <button class="btn btn-danger" onclick="logout()">Logout</button>
+            </div>
+        </div>
+
+        <!-- Recipe Management Section -->
+        <div class="recipe-section">
+            <h2 class="section-title">Recipe Management</h2>
+            
+            <!-- Search Recipes -->
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Search recipes by name or ingredients...">
+                <button class="btn" onclick="searchRecipes()">Search</button>
+                <button class="btn btn-secondary" onclick="loadAllRecipes()">Show All</button>
+            </div>
+
+            <!-- Add New Recipe Form -->
+            <div id="add-recipe-section" class="hidden">
+                <h3>Add New Recipe</h3>
+                <form id="recipe-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="recipe-title">Recipe Title:</label>
+                            <input type="text" id="recipe-title" placeholder="Grandma's Secret Chocolate Cake" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipe-category">Category:</label>
+                            <select id="recipe-category" required>
+                                <option value="">Select Category</option>
+                                <option value="Breakfast">Breakfast</option>
+                                <option value="Lunch">Lunch</option>
+                                <option value="Dinner">Dinner</option>
+                                <option value="Dessert">Dessert</option>
+                                <option value="Snacks">Snacks</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="recipe-description">Description:</label>
+                        <textarea id="recipe-description" placeholder="Tell the story behind this recipe..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Ingredients:</label>
+                        <div class="ingredients-list" id="ingredients-container">
+                            <div class="ingredient-item">
+                                <input type="text" class="ingredient-input" placeholder="2 cups flour">
+                                <button type="button" class="btn btn-danger btn-small" onclick="removeIngredient(this)">Remove</button>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-secondary btn-small" onclick="addIngredient()">Add Ingredient</button>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="recipe-instructions">Instructions:</label>
+                        <textarea id="recipe-instructions" placeholder="Step-by-step cooking instructions..." rows="6"></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="prep-time">Prep Time (minutes):</label>
+                            <input type="number" id="prep-time" min="0" placeholder="30">
+                        </div>
+                        <div class="form-group">
+                            <label for="cook-time">Cook Time (minutes):</label>
+                            <input type="number" id="cook-time" min="0" placeholder="45">
+                        </div>
+                        <div class="form-group">
+                            <label for="servings">Servings:</label>
+                            <input type="number" id="servings" min="1" placeholder="4">
+                        </div>
+                        <div class="form-group">
+                            <label for="difficulty">Difficulty:</label>
+                            <select id="difficulty">
+                                <option value="Easy">Easy</option>
+                                <option value="Medium">Medium</option>
+                                <option value="Hard">Hard</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn">Save Recipe</button>
+                    <button type="button" class="btn btn-secondary" onclick="cancelRecipeForm()">Cancel</button>
+                </form>
+            </div>
+
+            <button id="add-recipe-btn" class="btn hidden" onclick="showRecipeForm()">Add New Recipe</button>
+
+            <!-- Recipes Display -->
+            <div id="recipes-container">
+                <div class="loading">Loading recipes...</div>
+            </div>
+        </div>
+
+        <!-- Admin Section -->
+        <div class="admin-section hidden" id="admin-section">
+            <h2 class="section-title">Admin Panel</h2>
+            <div id="admin-content">
+                <button class="btn" onclick="loadAllUsers()">View All Users</button>
+                <button class="btn btn-secondary" onclick="loadAllRecipesAdmin()">Manage All Recipes</button>
+                <div id="admin-data"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./assets/js/index.js"></script>
+</body>
+</html>
